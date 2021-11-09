@@ -1,26 +1,30 @@
 <h2 mat-dialog-title>Tạo mới loại sản phẩm</h2>
 <mat-dialog-content class="mat-typography">
-    <form class="example-form">
+    <form [formGroup]="service.form" class="example-form" (ngSubmit)="onSubmit()">
         <div class="row">
             <div class="col-12">
                 <mat-form-field class="example-full-width" appearance="fill">
                     <mat-label>Tên loại</mat-label>
-                    <input matInput placeholder="..." value="">
+                    <input matInput placeholder="..." value="" formControlName="name">
+                    <mat-error>Tên loại bắt buộc </mat-error>
                 </mat-form-field>
                 <mat-form-field class="example-full-width" appearance="fill">
                     <mat-label>Tiêu đề</mat-label>
-                    <input matInput placeholder="..." value="">
+                    <input matInput placeholder="..." value="" formControlName="title">
+                    <mat-error>Tiêu đề bắt buộc </mat-error>
+
                 </mat-form-field>
                 <mat-form-field class="example-full-width" appearance="fill">
                     <mat-label>Mô tả</mat-label>
-                    <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+                    <textarea matInput placeholder="Ex. It makes me feel..." formControlName="description"></textarea>
+                    <mat-error>Mô tả bắt buộc </mat-error>
                 </mat-form-field>
-                <mat-slide-toggle>Kích hoạt</mat-slide-toggle>
+                <mat-slide-toggle  formControlName="isActive">Kích hoạt</mat-slide-toggle>
             </div>
         </div>
+        <mat-dialog-actions align="end">
+            <button mat-button mat-dialog-close (click)="onClear()">Hủy</button>
+            <button mat-button type="submit" [disabled]="service.form.invalid" cdkFocusInitial>Lưu</button>
+        </mat-dialog-actions>
     </form>
 </mat-dialog-content>
-<mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close>Hủy</button>
-    <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Lưu</button>
-</mat-dialog-actions>

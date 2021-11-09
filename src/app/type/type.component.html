@@ -1,5 +1,5 @@
 <div class="button">
-    <button mat-raised-button color="primary" (click)="openDialog()">Create</button>
+    <button mat-raised-button color="primary" (click)="createDialog()">Create</button>
 </div>
 <br>
 <div class="table-content">
@@ -29,7 +29,22 @@
         <!-- Symbol Column -->
         <ng-container matColumnDef="isActive">
             <th mat-header-cell *matHeaderCellDef> Trạng thái </th>
-            <td mat-cell *matCellDef="let element"> {{element.isActive}} </td>
+            <td mat-cell *matCellDef="let element"> 
+                <mat-icon *ngIf="element.isActive" color="primary">check_circle</mat-icon>
+                <mat-icon *ngIf="!element.isActive" color="warn">cancel</mat-icon>
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> Thao tác</th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-icon-button color="primary" aria-label="Example icon button with a menu icon" (click)="editDialog(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button color="primary" aria-label="Example icon button with a menu icon">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
