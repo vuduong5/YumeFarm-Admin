@@ -3,6 +3,7 @@
     <form [formGroup]="service.form" class="example-form" (ngSubmit)="onSubmit()">
         <div class="row">
             <div class="col-12">
+                <input hidden="true" matInput formControlName="id">
                 <mat-form-field class="example-full-width" appearance="fill">
                     <mat-label>Tên loại</mat-label>
                     <input matInput placeholder="..." value="" formControlName="name">

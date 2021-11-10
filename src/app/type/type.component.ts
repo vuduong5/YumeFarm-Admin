@@ -15,7 +15,7 @@ import { TypeModel } from "../models/type.model";
 })
 export class TypeComponent implements AfterViewInit {
   displayedColumns: string[] = ['name', 'title', 'createdDate', 'isActive', 'id'];
-  dataSource = new MatTableDataSource<TypeModel>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<TypeModel>();
 
   @ViewChild(MatPaginator)
   paginator!: MatPaginator;
@@ -24,7 +24,12 @@ export class TypeComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog, private service: TypeService) { 
+    this.service.getTypes().subscribe(data => {
+      this.dataSource = new MatTableDataSource<TypeModel>(data);
+      this.dataSource.paginator = this.paginator;
+    })
+  }
 
   createDialog() {
     const dialogConfig = new MatDialogConfig();
@@ -50,8 +55,7 @@ export class TypeComponent implements AfterViewInit {
   }
 }
 
-
-const ELEMENT_DATA: TypeModel[] = [
+var ELEMENT_DATA: TypeModel[] = [
   { id: "1", name: "Sấy", title: "Đồ sấy khô", createdDate: moment(new Date).format('DD-MM-YYYY'), isActive: true, description: "" },
   { id: "2", name: "Sấy 1", title: "Đồ sấy khô 1", createdDate: moment(new Date).format('DD-MM-YYYY'), isActive: true, description: "" },
   { id: "3", name: "Sấy 2", title: "Đồ sấy khô 2", createdDate: moment(new Date).format('DD-MM-YYYY'), isActive: false, description: "" },
@@ -65,14 +69,16 @@ const ELEMENT_DATA: TypeModel[] = [
 })
 
 export class DialogType {
+  action = "";
   constructor(
     public dialogRef: MatDialogRef<DialogType>,
     public service: TypeService,
     @Inject(MAT_DIALOG_DATA) public data: TypeModel) {
       service.initializeFormGroup();
-      console.log(data);
+      this.action = "create"
       if(data){
         service.fillFormGroup(data);
+        this.action = "edit";
       }
     }
   onNoClick(): void {
@@ -84,6 +90,21 @@ export class DialogType {
   }
   onSubmit(): void{
     console.log(this.service.form.value);
+    switch (this.action) {
+      case "create":
+        this.service.createType(this.service.form.value).subscribe(data => {
+          console.log("created successfully");
+        })
+        break;
+      case "edit":
+        this.service.editType(this.service.form.value).subscribe(data => {
+          console.log("edit succesfully");
+        })
+        break;
+      default:
+        break;
+    }
+    
     debugger;
   }
 }
