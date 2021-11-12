@@ -3,13 +3,24 @@ import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { TypeModel } from "../models/type.model";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+
 @Injectable({
   providedIn: 'root'
 })
 export class TypeService {
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
   private typesUrl = 'http://localhost:5000/api/types';  // URL to web api
   form: FormGroup;
-  constructor(private fb: FormBuilder, private http: HttpClient,) { 
+  constructor(
+    private fb: FormBuilder, 
+    private http: HttpClient,
+    private _snackBar: MatSnackBar,) { 
     this.form = this.fb.group({
       id: [''],
       name: ['', Validators.required],
@@ -36,6 +47,15 @@ export class TypeService {
       title: data.title,
       description: data.description,
       isActive: data.isActive
+    });
+  }
+
+  openSnackBar(title: string) {
+    this._snackBar.open(title, 'đóng', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      duration: 10000,
+      panelClass: ['green-snackbar']
     });
   }
 

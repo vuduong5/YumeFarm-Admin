@@ -3,8 +3,12 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatDialog, MatDialogRef, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { TypeService } from "../services/type.service";
-import * as moment from 'moment';
 import { TypeModel } from "../models/type.model";
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 /**
  * @title Table with pagination
  */
@@ -25,6 +29,10 @@ export class TypeComponent implements AfterViewInit {
   }
 
   constructor(public dialog: MatDialog, private service: TypeService) { 
+    this.refreshPaging();
+  }
+
+  refreshPaging(){
     this.service.getTypes().subscribe(data => {
       this.dataSource = new MatTableDataSource<TypeModel>(data);
       this.dataSource.paginator = this.paginator;
@@ -35,7 +43,10 @@ export class TypeComponent implements AfterViewInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
-    this.dialog.open(DialogType, dialogConfig);
+    const dialogRef = this.dialog.open(DialogType, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      this.refreshPaging();
+    })
   }
 
   editDialog(element: TypeModel) {
@@ -43,24 +54,31 @@ export class TypeComponent implements AfterViewInit {
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
     dialogConfig.data = element;
-    this.dialog.open(DialogType, dialogConfig);
+    const dialogRef = this.dialog.open(DialogType, dialogConfig);
+    dialogRef.afterClosed().subscribe(s => {
+      this.refreshPaging();
+    })
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(DialogType);
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      this.refreshPaging();
     });
   }
-}
 
-var ELEMENT_DATA: TypeModel[] = [
-  { id: "1", name: "Sấy", title: "Đồ sấy khô", createdDate: moment(new Date).format('DD-MM-YYYY'), isActive: true, description: "" },
-  { id: "2", name: "Sấy 1", title: "Đồ sấy khô 1", createdDate: moment(new Date).format('DD-MM-YYYY'), isActive: true, description: "" },
-  { id: "3", name: "Sấy 2", title: "Đồ sấy khô 2", createdDate: moment(new Date).format('DD-MM-YYYY'), isActive: false, description: "" },
-  { id: "4", name: "Sấy 3", title: "Đồ sấy khô 3", createdDate: moment(new Date).format('DD-MM-YYYY'), isActive: true, description: "" },
-];
+   confirmDialog(element: TypeModel){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = element;
+    const dialogRef = this.dialog.open(DialogConfirm, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      this.refreshPaging();
+    });
+   }
+
+}
 
 @Component({
   selector: 'dialog-type',
@@ -81,9 +99,7 @@ export class DialogType {
         this.action = "edit";
       }
     }
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
+  
   onClear(): void{
     this.service.form.reset();
     this.dialogRef.close();
@@ -93,12 +109,14 @@ export class DialogType {
     switch (this.action) {
       case "create":
         this.service.createType(this.service.form.value).subscribe(data => {
-          console.log("created successfully");
+          this.service.openSnackBar("Tạo mới thành công");
+          this.dialogRef.close();
         })
         break;
       case "edit":
         this.service.editType(this.service.form.value).subscribe(data => {
-          console.log("edit succesfully");
+          this.service.openSnackBar("Chỉnh sửa thành công");
+          this.dialogRef.close();
         })
         break;
       default:
@@ -107,4 +125,29 @@ export class DialogType {
     
     debugger;
   }
+}
+
+@Component({
+  selector: 'dialog-confirmation',
+  templateUrl: 'dialog-confirm.html',
+  styleUrls: ['./type.component.less']
+})
+
+export class DialogConfirm {
+  selectedType: TypeModel;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  constructor(    
+    public dialogRef: MatDialogRef<DialogType>,
+    public service: TypeService,
+    @Inject(MAT_DIALOG_DATA) public data: TypeModel){
+      this.selectedType = data;
+    }
+
+    confirmYes(element: TypeModel){
+      this.service.deleteType(element.id).subscribe(result => {
+        this.service.openSnackBar("Xóa thành công");
+        this.dialogRef.close();
+      });
+    }
 }

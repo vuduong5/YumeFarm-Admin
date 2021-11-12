@@ -13,13 +13,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { TypeComponent, DialogType } from './type/type.component';
+import { TypeComponent, DialogType, DialogConfirm } from './type/type.component';
 import { ProductComponent } from './product/product.component';
 import { CreateComponent } from './product/create/create.component';
 import { EditComponent } from './product/edit/edit.component';
 import { ErrorComponent } from './error/error.component';
 import { HttpClientModule } from '@angular/common/http';
-
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +29,8 @@ import { HttpClientModule } from '@angular/common/http';
     CreateComponent,
     EditComponent,
     ErrorComponent,
-    DialogType
+    DialogType,
+    DialogConfirm
   ],
   imports: [
     BrowserModule,
@@ -44,7 +45,8 @@ import { HttpClientModule } from '@angular/common/http';
     MatIconModule,
     MatFormFieldModule,
     FormsModule, ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
