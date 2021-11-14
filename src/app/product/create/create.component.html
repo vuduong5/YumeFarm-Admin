@@ -1,1 +1,82 @@
-<p>create works!</p>
+<div class="row">
+    <div class="col-6">
+        <mat-form-field appearance="fill">
+            <mat-label>Tiêu đề</mat-label>
+            <input matInput>
+        </mat-form-field>
+    </div>
+    <div class="col-6">
+        <mat-slide-toggle >Kích hoạt</mat-slide-toggle>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <mat-form-field appearance="fill">
+            <mat-label>Tên sản phẩm</mat-label>
+            <input matInput>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Gía sản phẩm</mat-label>
+            <input matInput>
+        </mat-form-field>
+    </div>
+    <div class="col-6">
+        <mat-form-field appearance="fill">
+            <mat-label>Loại sản phẩm</mat-label>
+            <mat-select>
+                <mat-option value="one">First option</mat-option>
+                <mat-option value="two">Second option</mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field appearance="fill">
+            <mat-label>Gía khuyen mai</mat-label>
+            <input matInput>
+        </mat-form-field>
+    </div>
+</div>
+
+<div class="row boundary-upload mt-2">
+    <h3>Chọn hình ảnh đại diện</h3>
+    <div class="col-lg-3">
+        <file-upload [control]="fileUploadControl"></file-upload>
+    </div>
+    <div class="col-lg-9">
+        <div class="file-list mt-1" *ngIf="fileUploadControl.value.length > 0">
+            <div class="file-item" 
+                *ngFor="let file of fileUploadControl.value"
+                (click)="fileUploadControl.removeFile(file)">
+                {{ file.name }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row boundary-upload mt-2">
+    <h3>Chọn hình ảnh trình chiếu</h3>
+    <div class="col-lg-3">
+        <file-upload [control]="fileUploadControl"></file-upload>
+    </div>
+    <div class="col-lg-9">
+        <div class="file-list mt-1" *ngIf="fileUploadControl.value.length > 0">
+            <div class="file-item" 
+                *ngFor="let file of fileUploadControl.value"
+                (click)="fileUploadControl.removeFile(file)">
+                {{ file.name }}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div [froalaEditor]>Hello, Froala!</div>
+    </div>
+</div>
+
+<div class="row mt-2">
+    <div class="button">
+        <button mat-raised-button color="primary" >Save</button>
+    </div>
+</div>

@@ -6,9 +6,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
-import {MatIconModule} from '@angular/material/icon';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,7 +19,11 @@ import { CreateComponent } from './product/create/create.component';
 import { EditComponent } from './product/edit/edit.component';
 import { ErrorComponent } from './error/error.component';
 import { HttpClientModule } from '@angular/common/http';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { ListComponent } from './product/list/list.component';
+import { MatSelectModule } from '@angular/material/select';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+import { FileUploadModule } from '@iplab/ngx-file-upload';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +34,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     EditComponent,
     ErrorComponent,
     DialogType,
-    DialogConfirm
+    DialogConfirm,
+    ListComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +51,10 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     MatFormFieldModule,
     FormsModule, ReactiveFormsModule,
     HttpClientModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule,
+    FroalaEditorModule.forRoot(), FroalaViewModule.forRoot(),
+    FileUploadModule
   ],
   providers: [],
   bootstrap: [AppComponent]

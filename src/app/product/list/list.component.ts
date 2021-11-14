@@ -1,14 +1,18 @@
 import { AfterViewInit, Component, ViewChild, Inject, Optional } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { ProductModel } from "../models/product.model";
-import { ProductService } from "../services/product.service";
+import { ProductModel } from "../../models/product.model";
+import { ProductService } from "../../services/product.service";
+
+
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.less']
+  selector: 'app-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.less']
 })
-export class ProductComponent implements AfterViewInit {
+
+
+export class ListComponent implements AfterViewInit {
 
   displayedColumns: string[] = ['name', 'title', 'createdDate', 'isActive', 'id'];
   dataSource = new MatTableDataSource<ProductModel>();
