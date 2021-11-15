@@ -6,7 +6,7 @@
         </mat-form-field>
     </div>
     <div class="col-6">
-        <mat-slide-toggle >Kích hoạt</mat-slide-toggle>
+        <mat-slide-toggle>Kích hoạt</mat-slide-toggle>
     </div>
 </div>
 <div class="row">
@@ -28,7 +28,7 @@
                 <mat-option *ngFor="let item of types" value="item.value">{{item.name}}</mat-option>
             </mat-select>
         </mat-form-field>
-        
+
         <mat-form-field appearance="fill">
             <mat-label>Gía khuyen mai</mat-label>
             <input matInput>
@@ -39,32 +39,26 @@
 <div class="row boundary-upload mt-2">
     <h3>Chọn hình ảnh đại diện</h3>
     <div class="col-lg-3">
-        <file-upload [control]="fileUploadControl"></file-upload>
+        <file-upload [control]="thumbnailImage"></file-upload>
     </div>
-    <div class="col-lg-9">
-        <div class="file-list mt-1" *ngIf="fileUploadControl.value.length > 0">
-            <div class="file-item" 
-                *ngFor="let file of fileUploadControl.value"
-                (click)="fileUploadControl.removeFile(file)">
-                {{ file.name }}
-            </div>
-        </div>
+    <div class="col-lg-9 p-2">
+        <mat-card *ngIf="thumbnailImage.value.length > 0" class="img-thumbnail">
+            <img mat-card-image *ngIf="thumbnailImage.valid" style="max-height: 125px" [src]="uploadedThumbnailImg | async">
+            <span *ngFor="let file of thumbnailImage.value" (click)="thumbnailImage.removeFile(file)" class="close">&times;</span>
+        </mat-card>
     </div>
 </div>
 
 <div class="row boundary-upload mt-2">
     <h3>Chọn hình ảnh trình chiếu</h3>
     <div class="col-lg-3">
-        <file-upload [control]="fileUploadControl"></file-upload>
+        <file-upload [control]="sliderImages"></file-upload>
     </div>
-    <div class="col-lg-9">
-        <div class="file-list mt-1" *ngIf="fileUploadControl.value.length > 0">
-            <div class="file-item" 
-                *ngFor="let file of fileUploadControl.value"
-                (click)="fileUploadControl.removeFile(file)">
-                {{ file.name }}
-            </div>
-        </div>
+    <div class="col-lg-9 p-2 d-flex">
+        <mat-card *ngFor="let file of uploadedSliderImg | async" class="img-thumbnail mr-3">
+            <img mat-card-image *ngIf="sliderImages.valid" style="max-height: 125px" [src]="file">
+            <span *ngFor="let file of sliderImages.value" (click)="sliderImages.removeFile(file)" class="close">&times;</span>
+        </mat-card>
     </div>
 </div>
 
@@ -76,6 +70,6 @@
 
 <div class="row mt-2">
     <div class="button">
-        <button mat-raised-button color="primary" >Save</button>
+        <button mat-raised-button color="primary" (click)="saveProduct()">Save</button>
     </div>
 </div>

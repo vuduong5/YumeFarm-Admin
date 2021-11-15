@@ -24,6 +24,8 @@ import { ListComponent } from './product/list/list.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { FileUploadModule } from '@iplab/ngx-file-upload';
+import {MatCardModule} from '@angular/material/card';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +56,7 @@ import { FileUploadModule } from '@iplab/ngx-file-upload';
     MatSnackBarModule,
     MatSelectModule,
     FroalaEditorModule.forRoot(), FroalaViewModule.forRoot(),
-    FileUploadModule
+    FileUploadModule, MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
