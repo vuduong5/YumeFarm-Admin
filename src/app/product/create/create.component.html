@@ -47,6 +47,9 @@
             <span *ngFor="let file of thumbnailImage.value" (click)="thumbnailImage.removeFile(file)" class="close">&times;</span>
         </mat-card>
     </div>
+    <div class="button">
+        <button class="upload_button" (click)="uploadThumbnail()" mat-raised-button color="primary" >Upload</button>
+    </div>
 </div>
 
 <div class="row boundary-upload mt-2">
@@ -59,6 +62,9 @@
             <img mat-card-image *ngIf="sliderImages.valid" style="max-height: 125px" [src]="file">
             <span *ngFor="let file of sliderImages.value" (click)="sliderImages.removeFile(file)" class="close">&times;</span>
         </mat-card>
+    </div>
+    <div class="button">
+        <button class="upload_button" mat-raised-button color="primary" >Upload</button>
     </div>
 </div>
 

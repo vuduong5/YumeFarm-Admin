@@ -3,6 +3,7 @@ import { FileUploadControl, FileUploadValidators } from '@iplab/ngx-file-upload'
 import { TypeService } from "../../services/type.service";
 import { SelectionModel } from "../../models/selection.model";
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-create',
@@ -21,7 +22,8 @@ export class CreateComponent implements OnInit, OnDestroy {
   );
   sliderImages = new FileUploadControl({ listVisible: false, accept: ['image/*'] });
   types: SelectionModel[] = [];
-  constructor(private typeService: TypeService) {
+  constructor(private typeService: TypeService,
+    private productService: ProductService) {
     this.typeService.getTypes().subscribe(results => {
       this.types = results.map((data) => {
         return <SelectionModel>{
@@ -83,5 +85,17 @@ export class CreateComponent implements OnInit, OnDestroy {
         }
       })
     }
+  }
+
+  uploadThumbnail(): void{
+    let files: Array<File> = this.thumbnailImage.value.map(file => {
+      return file;
+    })
+    this.productService.uploadImages(files).subscribe(result => {
+      if(result.status == 1){
+        this.typeService.openSnackBar("Upload success");
+      }
+    });
+    
   }
 }
