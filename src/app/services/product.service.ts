@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Validators, FormBuilder, FormGroup } from "@angular/forms";
 import { ProductModel } from '../models/product.model';
+import { ProductDetailModel } from "../models/product.detail.model";
 @Injectable({
   providedIn: 'root'
 })
@@ -37,5 +38,28 @@ export class ProductService {
       formData.append(`files`, file);
     }
     return this.http.post<Array<File>>(this.productURL + '/upload', formData);
+  }
+
+  getProducts(): Observable<ProductModel[]> {
+    return this.http.get<ProductModel[]>(this.productURL)
+  }
+
+  getProduct(id: string): Observable<ProductDetailModel>{
+    return this.http.get<ProductDetailModel>(this.productURL+'/'+id);
+  }
+
+  initializeFormGroup() {
+    this.form.setValue({
+      id: '',
+      name: '',
+      title: '',
+      description: '',
+      isActive: true,
+      typeId: '',
+      price: '',
+      images: '',
+      thumbnail: '',
+      salePrice: ''
+    });
   }
 }

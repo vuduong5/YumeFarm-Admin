@@ -29,12 +29,13 @@ export class ListComponent implements AfterViewInit {
   }
 
   refreshPaging(){
-    // this.service.getTypes().subscribe(data => {
-    //   this.dataSource = new MatTableDataSource<TypeModel>(data);
-    //   this.dataSource.paginator = this.paginator;
-    // })
-    this.dataSource = new MatTableDataSource<ProductModel>(SEED_DATA);
-    this.dataSource.paginator = this.paginator;
+    this.service.getProducts().subscribe(data => {
+      debugger
+      this.dataSource = new MatTableDataSource<ProductModel>(data);
+      this.dataSource.paginator = this.paginator;
+    })
+    // this.dataSource = new MatTableDataSource<ProductModel>(SEED_DATA);
+    // this.dataSource.paginator = this.paginator;
   }
 
 

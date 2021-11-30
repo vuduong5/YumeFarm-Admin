@@ -24,14 +24,15 @@ export class CreateComponent implements OnInit, OnDestroy {
   isValidateForm: boolean = true;
   constructor(private typeService: TypeService,
     public productService: ProductService) {
-    this.typeService.getTypes().subscribe(results => {
-      this.types = results.map((data) => {
-        return <SelectionModel>{
-          value: data.id,
-          name: data.name
-        }
+      this.productService.initializeFormGroup();
+      this.typeService.getTypes().subscribe(results => {
+        this.types = results.map((data) => {
+          return <SelectionModel>{
+            value: data.id,
+            name: data.name
+          }
+        })
       })
-    })
   }
 
   ngOnInit(): void {
