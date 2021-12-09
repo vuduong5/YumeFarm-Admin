@@ -49,10 +49,10 @@
         <div class="col-lg-9 p-2">
             <mat-card *ngIf="thumbnailImage.value.length > 0" class="img-thumbnail">
                 <img mat-card-image *ngIf="thumbnailImage.valid" style="max-height: 125px" [src]="uploadedThumbnailImg | async">
-                <span *ngFor="let file of thumbnailImage.value" (click)="thumbnailImage.removeFile(file)" class="close">&times;</span>
+                <span *ngFor="let file of thumbnailImage.value" (click)="removeThumbnailUpload(file)" class="close">&times;</span>
             </mat-card>
             <mat-card *ngIf="editThumbImage.length > 0" class="img-thumbnail">
-                <img mat-card-image *ngIf="editThumbImage.length > 0" style="max-height: 125px" [src]="editThumbImage">
+                <img mat-card-image *ngIf="editThumbImage.length > 0" style="max-height: 125px" [src]="combineImageURL(editThumbImage)">
                 <span (click)="removeThumbnailImage(editThumbImage)" class="close">&times;</span>
             </mat-card>
         </div>
@@ -79,7 +79,7 @@
                 <span *ngFor="let file of sliderImages.value" (click)="sliderImages.removeFile(file)" class="close">&times;</span>
             </mat-card>
             <mat-card *ngFor="let file of editSliderImages" class="img-thumbnail mr-3">
-                <img mat-card-image style="max-height: 125px" [src]="file">
+                <img mat-card-image style="max-height: 125px" [src]="combineImageURL(file)">
                 <span (click)="removeSliderImage(file)" class="close">&times;</span>
             </mat-card>
         </div>

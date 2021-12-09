@@ -1,6 +1,9 @@
 import { AfterViewInit, Component, ViewChild, Inject, Optional } from '@angular/core';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
+import { TypeService } from 'src/app/services/type.service';
 import { ProductModel } from "../../models/product.model";
 import { ProductService } from "../../services/product.service";
 
@@ -24,26 +27,52 @@ export class ListComponent implements AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  constructor(private service: ProductService) { 
+  constructor(public dialog: MatDialog, private service: ProductService) { 
     this.refreshPaging();
   }
 
   refreshPaging(){
     this.service.getProducts().subscribe(data => {
-      debugger
       this.dataSource = new MatTableDataSource<ProductModel>(data);
       this.dataSource.paginator = this.paginator;
     })
-    // this.dataSource = new MatTableDataSource<ProductModel>(SEED_DATA);
-    // this.dataSource.paginator = this.paginator;
   }
 
+  confirmDialog(element: ProductModel){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = element;
+    const dialogRef = this.dialog.open(ProductDialogConfirm, dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {
+      this.refreshPaging();
+    });
+   }
 
 }
 
 
-const SEED_DATA: ProductModel[] = [
-  {id: "1", name: "product 1", title: 'title 1', createdDate: '2021-11-13', isActive: true, description: ""},
-  {id: "2", name: "product 2", title: 'title 2', createdDate: '2021-11-13', isActive: true, description: ""},
-  {id: "3", name: "product 3", title: 'title 3', createdDate: '2021-11-13', isActive: true, description: ""},
-]
+@Component({
+  selector: 'dialog-confirmation-product',
+  templateUrl: 'dialog-confirm.html',
+  styleUrls: ['./list.component.less']
+})
+
+export class ProductDialogConfirm {
+  selectedProduct: ProductModel;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'right';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  constructor(    
+    public service: ProductService,
+    public typeService: TypeService,
+    public dialogRef: MatDialogRef<ProductDialogConfirm>,
+    @Inject(MAT_DIALOG_DATA) public data: ProductModel){
+      this.selectedProduct = data;
+    }
+
+    confirmYes(element: ProductModel){
+      this.service.deleteProduct(element.id).subscribe(result => {
+        this.typeService.openSnackBar("Xóa thành công");
+        this.dialogRef.close();
+      });
+    }
+}

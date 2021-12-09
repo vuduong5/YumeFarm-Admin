@@ -20,12 +20,11 @@ import { EditComponent } from './product/edit/edit.component';
 import { ErrorComponent } from './error/error.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { ListComponent } from './product/list/list.component';
+import { ListComponent, ProductDialogConfirm } from './product/list/list.component';
 import { MatSelectModule } from '@angular/material/select';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { FileUploadModule } from '@iplab/ngx-file-upload';
 import {MatCardModule} from '@angular/material/card';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,7 +36,8 @@ import {MatCardModule} from '@angular/material/card';
     ErrorComponent,
     DialogType,
     DialogConfirm,
-    ListComponent
+    ProductDialogConfirm,
+    ListComponent,
   ],
   imports: [
     BrowserModule,

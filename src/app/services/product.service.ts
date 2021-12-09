@@ -30,6 +30,14 @@ export class ProductService {
     return this.http.post<ProductModel>(this.productURL, product);
   }
 
+  updateProduct(product: ProductModel): Observable<ProductModel>{
+    return this.http.put<ProductModel>(this.productURL +'/'+ product.id, product);
+  }
+
+  deleteProduct(id: string): Observable<ProductModel>{
+    return this.http.delete<ProductModel>(this.productURL + '/' + id);
+  }
+
 
   uploadImages(files: Array<File>): Observable<any>{
     const formData = new FormData();

@@ -1,11 +1,11 @@
 import { TypeService } from './../../services/type.service';
 import { ProductService } from 'src/app/services/product.service';
-import { ProductDetailModel } from './../../models/product.detail.model';
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import { FileUploadControl, FileUploadValidators } from '@iplab/ngx-file-upload';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { SelectionModel } from 'src/app/models/selection.model';
+import { environment } from "../../../environments/environment";
 
 @Component({
   selector: 'app-edit',
@@ -15,6 +15,7 @@ import { SelectionModel } from 'src/app/models/selection.model';
 export class EditComponent implements OnInit {
   public uploadedThumbnailImg: BehaviorSubject<string> = new BehaviorSubject("");
   public uploadedSliderImg: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
+  public urlImage = environment.ggURL;
   private subscription: Subscription = new Subscription();
   private strCount: Array<string> = new Array<string>();
   thumbnailImage = new FileUploadControl(
@@ -54,13 +55,13 @@ export class EditComponent implements OnInit {
           typeId: data.type.id,
           price: data.price,
           title: data.title,
-          images: data.images,
+          images: data.images.join(','),
           thumbnail: data.thumbnail,
           salePrice: data.salePrice,
           id: data.id
         })
-        this.editThumbImage = 'https://i.ibb.co/dDTtbCg/mac-OS-Big-Sur-Vector-Wave-Wallpaper-i-Download-Blog.jpg';
-        this.editSliderImages = ['https://i.ibb.co/dDTtbCg/mac-OS-Big-Sur-Vector-Wave-Wallpaper-i-Download-Blog.jpg']
+        this.editThumbImage = 'mac-OS-Big-Sur-Vector-Wave-Wallpaper-i-Download-Blog.jpg';
+        this.editSliderImages = ['mac-OS-Big-Sur-Vector-Wave-Wallpaper-i-Download-Blog.jpg']
       })
     }
 
@@ -75,8 +76,8 @@ export class EditComponent implements OnInit {
 
   saveProduct() {
     this.isValidateForm = false;
-    this.productService.createProduct(this.productService.form.value).subscribe(result => {
-      this.typeService.openSnackBar("Tạo mới thành công");
+    this.productService.updateProduct(this.productService.form.value).subscribe(result => {
+      this.typeService.openSnackBar("Cập nhật thành công");
     })
   }
 
@@ -149,12 +150,25 @@ export class EditComponent implements OnInit {
     this.productService.form.controls["thumbnail"].setValue('');
   }
 
+  removeThumbnailUpload(file: File): void{
+    this.thumbnailImage.removeFile(file);
+    this.productService.form.controls["thumbnail"].setValue('');
+  }
+  
   removeSliderImage(image: string): void{
     const index = this.editSliderImages.indexOf(image);
     if (index > -1) {
       this.editSliderImages.splice(index, 1);
-      this.productService.form.controls["images"].setValue('');
+      let imgs = this.productService.form.controls["images"].value.split(',');
+      let i = imgs.indexOf(image);
+      if(i > -1){
+        imgs.splice(i, 1);
+        this.productService.form.controls["images"].setValue(imgs.join(','));
+      }
     }
   }
 
+  combineImageURL(img: string){
+    return `${this.urlImage}/${img}`;
+  }
 }
