@@ -1,1 +1,101 @@
-<p>create works!</p>
+<form [formGroup]="productService.form" class="example-form" (ngSubmit)="onSubmit()">
+    <input hidden="true" matInput formControlName="id">
+    <div class="row">
+        <div class="col-6">
+            <mat-form-field appearance="fill">
+                <mat-label>Tiêu đề</mat-label>
+                <input matInput placeholder="..." value="" formControlName="title">
+                <mat-error>Tiêu đề bắt buộc</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-6">
+            <mat-slide-toggle  formControlName="isActive">Kích hoạt</mat-slide-toggle>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <mat-form-field appearance="fill">
+                <mat-label>Tên sản phẩm</mat-label>
+                <input matInput placeholder="..." value="" formControlName="name">
+                <mat-error>Tên sản phẩm bắt buộc</mat-error>
+            </mat-form-field>
+    
+            <mat-form-field appearance="fill">
+                <mat-label>Giá sản phẩm</mat-label>
+                <input matInput placeholder="..." value="" type="number" formControlName="price">
+                <mat-error>Giá sản phẩm bắt buộc</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="col-6">
+            <mat-form-field appearance="fill">
+                <mat-label>Loại sản phẩm</mat-label>
+                <mat-select formControlName="typeId">
+                    <mat-option *ngFor="let item of types" [value]="item.value">{{item.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+    
+            <mat-form-field appearance="fill">
+                <mat-label>Giá khuyến mãi</mat-label>
+                <input matInput placeholder="..." value="" type="number" formControlName="salePrice">
+            </mat-form-field>
+        </div>
+    </div>
+    
+    <div class="row boundary-upload mt-2">
+        <h3>Chọn hình ảnh đại diện</h3>
+        <div class="col-lg-3">
+            <file-upload [control]="thumbnailImage"></file-upload>
+        </div>
+        <div class="col-lg-9 p-2">
+            <mat-card *ngIf="thumbnailImage.value.length > 0" class="img-thumbnail">
+                <img mat-card-image *ngIf="thumbnailImage.valid" style="max-height: 125px" [src]="uploadedThumbnailImg | async">
+                <span *ngFor="let file of thumbnailImage.value" (click)="thumbnailImage.removeFile(file)" class="close">&times;</span>
+            </mat-card>
+        </div>
+        <div [hidden]="isValidateForm">
+            <input hidden matInput formControlName="thumbnail">
+            <mat-error *ngIf="productService.form.controls['thumbnail'].invalid">Hình đại diện bắt buộc</mat-error>
+        </div>
+        <div class="button">
+            <button class="upload_button" (click)="uploadThumbnail()" [disabled]="thumbnailImage.value.length == 0" mat-raised-button color="primary" >
+                Upload <mat-icon *ngIf="!productService.form.controls['thumbnail'].invalid" color="white">check_circle</mat-icon>
+            </button>
+        </div>
+        
+    </div>
+    
+    <div class="row boundary-upload mt-2">
+        <h3>Chọn hình ảnh trình chiếu</h3>
+        <div class="col-lg-3">
+            <file-upload [control]="sliderImages"></file-upload>
+        </div>
+        <div class="col-lg-9 p-2 d-flex">
+            <mat-card *ngFor="let file of uploadedSliderImg | async" class="img-thumbnail mr-3">
+                <img mat-card-image *ngIf="sliderImages.valid" style="max-height: 125px" [src]="file">
+                <span *ngFor="let file of sliderImages.value" (click)="sliderImages.removeFile(file)" class="close">&times;</span>
+            </mat-card>
+        </div>
+        <div [hidden]="isValidateForm">
+            <input hidden matInput formControlName="images">
+            <mat-error *ngIf="productService.form.controls['images'].invalid">Hình trình chiếu bắt buộc</mat-error>
+        </div>
+        <div class="button">
+            <button class="upload_button" (click)="uploadImages()" [disabled]="sliderImages.value.length == 0" mat-raised-button color="primary" >
+                Upload <mat-icon *ngIf="!productService.form.controls['images'].invalid" color="white">check_circle</mat-icon>
+            </button>
+        </div>
+        
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div [froalaEditor] formControlName="description">Hello, Froala!</div>
+        </div>
+    </div>
+    
+    <div class="row mt-2">
+        <div class="button">
+            <button mat-raised-button color="primary" [disabled]="productService.form.invalid" (click)="saveProduct()">Save</button>
+        </div>
+    </div>
+</form>
