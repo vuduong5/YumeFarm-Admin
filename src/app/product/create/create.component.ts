@@ -52,7 +52,7 @@ export class CreateComponent implements OnInit, OnDestroy {
   saveProduct() {
     this.isValidateForm = false;
     this.productService.createProduct(this.productService.form.value).subscribe(result => {
-      console.log(result);
+      console.log('Create the product is successfully!', result);
       this.typeService.openSnackBar("Tạo mới thành công");
     })
   }
@@ -92,29 +92,29 @@ export class CreateComponent implements OnInit, OnDestroy {
   }
 
   uploadThumbnail(): void{
-    // let files: Array<File> = this.thumbnailImage.value.map(file => {
-    //   return file;
-    // })
-    // this.productService.uploadImages(files).subscribe(result => {
-    //   if(result.status == 1){
-    //     this.typeService.openSnackBar("Upload success");
-    //     this.productService.form.controls["thumbnail"].setValue(result.data);
-    //   }
-    // });
-    this.productService.form.controls["thumbnail"].setValue('abc.png');
+    let files: Array<File> = this.thumbnailImage.value.map(file => {
+      return file;
+    })
+    this.productService.uploadImages(files).subscribe(result => {
+      if(result.status == 1){
+        this.typeService.openSnackBar("Upload success");
+        this.productService.form.controls["thumbnail"].setValue(result.data[0]);
+      }
+    });
+    // this.productService.form.controls["thumbnail"].setValue('abc.png');
   }
 
   uploadImages(): void{
-    // let files: Array<File> = this.sliderImages.value.map(file => {
-    //   return file;
-    // })
-    // this.productService.uploadImages(files).subscribe(result => {
-    //   if(result.status == 1){
-    //     this.typeService.openSnackBar("Upload success");
-    //     this.productService.form.controls["images"].setValue(result.data);
-    //   }
-    // });
-    this.productService.form.controls["images"].setValue('bcd.png');
+    let files: Array<File> = this.sliderImages.value.map(file => {
+      return file;
+    })
+    this.productService.uploadImages(files).subscribe(result => {
+      if(result.status == 1){
+        this.typeService.openSnackBar("Upload success");
+        this.productService.form.controls["images"].setValue(result.data.join(','));
+      }
+    });
+    // this.productService.form.controls["images"].setValue('bcd.png');
   }
 
   onSubmit(): void{

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  ggURL: 'https://i.ibb.co/dDTtbCg/'
+  ggURL: 'https://storage.googleapis.com/yume_farm_bucket'
 };
 
 /*

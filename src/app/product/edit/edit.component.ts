@@ -47,7 +47,6 @@ export class EditComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if(id){
       this.productService.getProduct(id ?? '').subscribe(data => {
-        debugger
         this.productService.form.patchValue({
           name: data.name,
           description: data.description,
@@ -60,8 +59,8 @@ export class EditComponent implements OnInit {
           salePrice: data.salePrice,
           id: data.id
         })
-        this.editThumbImage = 'mac-OS-Big-Sur-Vector-Wave-Wallpaper-i-Download-Blog.jpg';
-        this.editSliderImages = ['mac-OS-Big-Sur-Vector-Wave-Wallpaper-i-Download-Blog.jpg']
+        this.editThumbImage = data.thumbnail;
+        this.editSliderImages = data.images;
       })
     }
 
@@ -116,29 +115,29 @@ export class EditComponent implements OnInit {
   }
 
   uploadThumbnail(): void{
-    // let files: Array<File> = this.thumbnailImage.value.map(file => {
-    //   return file;
-    // })
-    // this.productService.uploadImages(files).subscribe(result => {
-    //   if(result.status == 1){
-    //     this.typeService.openSnackBar("Upload success");
-    //     this.productService.form.controls["thumbnail"].setValue(result.data);
-    //   }
-    // });
-    this.productService.form.controls["thumbnail"].setValue('abc.png');
+    let files: Array<File> = this.thumbnailImage.value.map(file => {
+      return file;
+    })
+    this.productService.uploadImages(files).subscribe(result => {
+      if(result.status == 1){
+        this.typeService.openSnackBar("Upload success");
+        this.productService.form.controls["thumbnail"].setValue(result.data[0]);
+      }
+    });
+    // this.productService.form.controls["thumbnail"].setValue('abc.png');
   }
 
   uploadImages(): void{
-    // let files: Array<File> = this.sliderImages.value.map(file => {
-    //   return file;
-    // })
-    // this.productService.uploadImages(files).subscribe(result => {
-    //   if(result.status == 1){
-    //     this.typeService.openSnackBar("Upload success");
-    //     this.productService.form.controls["images"].setValue(result.data);
-    //   }
-    // });
-    this.productService.form.controls["images"].setValue('bcd.png');
+    let files: Array<File> = this.sliderImages.value.map(file => {
+      return file;
+    })
+    this.productService.uploadImages(files).subscribe(result => {
+      if(result.status == 1){
+        this.typeService.openSnackBar("Upload success");
+        this.productService.form.controls["images"].setValue(result.data.join(','));
+      }
+    });
+    // this.productService.form.controls["images"].setValue('bcd.png');
   }
 
   onSubmit(): void{

@@ -1,13 +1,13 @@
 import { TypeModel } from "./type.model";
 export interface ProductDetailModel {
-  name: String,
-  description: String,
+  name: string,
+  description: string,
   isActive: Boolean,
   type: TypeModel,
   price: number,
-  title: String,
+  title: string,
   images: Array<string>,
-  thumbnail: String,
+  thumbnail: string,
   salePrice: Number,
-  id: String
+  id: string
 }
